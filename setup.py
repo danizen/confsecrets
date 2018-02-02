@@ -20,6 +20,14 @@ def get_version():
     return version
 
 
+def convert_readme():
+    """
+    Convert README.md into rst or plain-text
+    """
+    with open('README.md') as f:
+        return f.read()
+
+
 def get_dependencies(path):
     """
     Parse requirements files using pip internals and return only the name of the requirement
@@ -43,6 +51,7 @@ setup(
     name='confsecrets',
     version=get_version(),
     description='Simple utilities/modules to encrypt/decrypt application configuration secrets flexibly.',
+    long_description=convert_readme(),
     author='Dan Davis',
     author_email='daniel.davis@nih.gov',
     url='https://git-scm.nlm.nih.gov/projects/PYTHON/repos/confsecrets/',
