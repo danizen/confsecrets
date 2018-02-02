@@ -49,11 +49,11 @@ setup(
     packages=[
         'confsecrets',
     ],
-    entry_points={
-        'console_scripts': [
-            'pbetool=confsecrets.pbe:main',
-        ]
-    },
+    #entry_points={
+    #    'console_scripts': [
+    #        'pbetool=confsecrets.pbetool:main',
+    #    ]
+    #},
     tests_require=get_tests_require(),
     install_requires=get_install_requires(),
     classifiers=[

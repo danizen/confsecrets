@@ -1,4 +1,5 @@
 from Crypto import Random
+from Crypto.Random import random
 from Crypto.Hash.HMAC import HMAC
 from Crypto.Hash import SHA256
 from Crypto.Cipher import AES
@@ -65,6 +66,19 @@ class CClass(Enum):
                 return cls.OTHER
         return set(map(character2class, password))
 
+    def characters(self):
+        if self == CClass.LOWER:
+            return string.ascii_lowercase
+        elif self == CClass.UPPER:
+            return string.ascii_uppercase
+        elif self == CClass.DIGIT:
+            return string.digits
+        elif self == CClass.SYMBOL:
+            return ''.join(filter(lambda c: shlex_quote(c) == c, string.punctuation))
+        elif self == CClass.SPACE:
+            return self.whitespace
+        return None
+
 
 class PasswordUtil():
 
@@ -96,6 +110,32 @@ class PasswordUtil():
         # Check if the password is safe for the shell
         if shlex_quote(password) != password:
             raise PasswordNotShellSafe()
+
+    @classmethod
+    def generate(cls, length=0):
+        """
+        Generate a new password
+        :param length: a length for the password
+        :return: a password that meets requirements above
+        """
+        if length < cls.min_length:
+            length = cls.min_length
+        required_classes = list(cls.required_classes)
+        def generate_candidate(length):
+            bpass = bytearray(length)
+            for i in range(length):
+                cclass = random.choice(required_classes)
+                bpass[i] = ord(random.choice(cclass.characters()))
+            return bpass.decode('ascii')
+        # each candidate is very likely to meet the requirements, but let's be sure
+        while True:
+            candidate = generate_candidate(length)
+            try:
+                cls.check(candidate)
+                return candidate
+            except PasswordTooSimple:
+                pass
+
 
 
 class PBEUtil(object):

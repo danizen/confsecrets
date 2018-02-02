@@ -83,3 +83,8 @@ class TestPasswordUtil(TestCase):
     def test_ok(self):
         PasswordUtil.check('11,abcdefghijKLMNOPqrstuv,22')
 
+    def test_generate(self):
+        length = len(PasswordUtil.generate(length=2))
+        self.assertEquals(length, PasswordUtil.min_length)
+        extra_length = len(PasswordUtil.generate(length=16))
+        self.assertEquals(extra_length, 16)
