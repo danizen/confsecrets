@@ -21,7 +21,7 @@ pip-log.txt
 .coverage
 coverage
 .tox
-juinit.xml
+junit.xml
 
 # IDEs
 /.idea/
