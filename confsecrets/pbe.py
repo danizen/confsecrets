@@ -1,15 +1,35 @@
+"""
+Wrap PyCrypto for safe and effective Password Based Encryption (PBE)
+"""
+from base64 import b64encode, b64decode
+import string
+from enum import Enum
+from six.moves import shlex_quote
+
 from Crypto import Random
 from Crypto.Random import random
 from Crypto.Hash.HMAC import HMAC
 from Crypto.Hash import SHA256
 from Crypto.Cipher import AES
 from Crypto.Protocol.KDF import PBKDF2
-from base64 import b64encode, b64decode
-import string
-from enum import Enum
-from six.moves import shlex_quote
 
-__all__ = ['MessageTooShort','InvalidMessageAuthenticationCode', 'PasswordTooSimple','PasswordNotShellSafe', 'PasswordUtil', 'PBEUtil', 'CClass',]
+__all__ = [
+    'InvalidSalt',
+    'MessageTooShort',
+    'InvalidMessageAuthenticationCode',
+    'PasswordTooSimple',
+    'PasswordNotShellSafe',
+    'PasswordUtil',
+    'PBEUtil',
+    'CClass',
+]
+
+
+class InvalidSalt(Exception):
+    """
+    The salt must be an 8-byte bytes object
+    """
+    pass
 
 
 class MessageTooShort(Exception):
@@ -21,7 +41,8 @@ class MessageTooShort(Exception):
 
 class InvalidMessageAuthenticationCode(Exception):
     """
-    Message authentication code invalid; the encrypted message must have been created by different software or with a different password.
+    Message authentication code invalid; the encrypted message must have been created
+    by different software or with a different password.
     """
     pass
 
@@ -42,6 +63,10 @@ class PasswordNotShellSafe(Exception):
 
 
 class CClass(Enum):
+    """
+    Enumeration of ascii character classes that knows how to characterize strings
+    and generate sub-strings for each character class
+    """
     LOWER = 1
     UPPER = 2
     DIGIT = 3
@@ -51,22 +76,27 @@ class CClass(Enum):
 
     @classmethod
     def classes(cls, password):
-        def character2class(c):
-            if c in string.ascii_lowercase:
+        """
+        Returns the set of character classes contained in the input
+        """
+        def character2class(char):
+            if char in string.ascii_lowercase:
                 return cls.LOWER
-            elif c in string.ascii_uppercase:
+            elif char in string.ascii_uppercase:
                 return cls.UPPER
-            elif c in string.digits:
+            elif char in string.digits:
                 return cls.DIGIT
-            elif c in string.punctuation:
+            elif char in string.punctuation:
                 return cls.SYMBOL
-            elif c in string.whitespace:
+            elif char in string.whitespace:
                 return cls.SPACE
-            else:
-                return cls.OTHER
+            return cls.OTHER
         return set(map(character2class, password))
 
     def characters(self):
+        """
+        Returns the characters in the given character class, except for CClass.OTHER
+        """
         if self == CClass.LOWER:
             return string.ascii_lowercase
         elif self == CClass.UPPER:
@@ -81,13 +111,12 @@ class CClass(Enum):
 
 
 class PasswordUtil():
-
+    """
+    Utility class for checking password complexity and generating passwords.
+    """
     required_classes = {CClass.LOWER, CClass.UPPER, CClass.DIGIT, CClass.SYMBOL}
     min_length = 12
 
-    """
-    The password util provides a mechanism to check and generate passwords
-    """
     @classmethod
     def check(cls, password):
         """
@@ -137,7 +166,6 @@ class PasswordUtil():
                 pass
 
 
-
 class PBEUtil(object):
     """
     A Cryptor handles symmetric encryption using binary keys derived from clear text keys
@@ -149,14 +177,18 @@ class PBEUtil(object):
 
     See RFC-2898 for a definition of the algorithms.
     """
-    salt = b'\xe2\x98\xe5\xdc\xeb\xf5\xcc\xd8'
     iterations = 1007
     key_size = 32
 
-    def __init__(self, password, salt=None):
+    def __init__(self, password, salt):
         if not isinstance(password, bytes):
             password = str(password).encode('utf-8')
-        self.password= password
+        try:
+            salt = bytes(salt)
+            assert len(salt) == 8
+        except:
+            raise InvalidSalt
+        self.password = password
         if salt is not None:
             self.salt = bytes(salt)
         self.__key = None
