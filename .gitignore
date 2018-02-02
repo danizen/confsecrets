@@ -1,0 +1,28 @@
+# For now, ignore package-lock.json
+package-lock.json
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyc*
+*$py.class
+.pyo
+
+# Packages
+*.egg
+*.egg-info
+/dist/
+/build/
+
+# Installer logs
+pip-log.txt
+
+# Unit test / coverage reports
+.coverage
+coverage
+.tox
+juinit.xml
+
+# IDEs
+/.idea/
+/.pydevproject

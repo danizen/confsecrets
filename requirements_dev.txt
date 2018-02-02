@@ -1,0 +1,4 @@
+-r requirements.txt
+
+pip>=9.0.1
+ipython>=6.1.0
