@@ -20,9 +20,9 @@ def get_version():
     return version
 
 
-def convert_readme():
+def get_readme():
     """
-    Convert README.md into rst or plain-text
+    Open and read the readme. This would be the place to convert to RST, but we no longer have to.
     """
     with open('README.md') as f:
         return f.read()
@@ -51,7 +51,8 @@ setup(
     name='confsecrets',
     version=get_version(),
     description='Simple utilities/modules to encrypt/decrypt application configuration secrets flexibly.',
-    long_description=convert_readme(),
+    long_description=get_readme(),
+    long_description_content_type='text/markdown; charset=UTF-8; variant=CommonMark',
     author='Dan Davis',
     author_email='daniel.davis@nih.gov',
     url='https://git-scm.nlm.nih.gov/projects/PYTHON/repos/confsecrets/',
