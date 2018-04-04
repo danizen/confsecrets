@@ -241,12 +241,12 @@ class PBEUtil(object):
         mac = HMAC(self.key, message_bytes, SHA256).digest()
         return b64encode(mac + message_bytes)
 
-    def decrypt(self, message):
+    def decrypt_bytes(self, message):
         """
         Decrypt a message that is encoded in Base64 consisting of a mac, an iv, and ciphertext
 
         :param: message: must be a base64 encoded string
-        :return: A clear text string
+        :return: A clear byte string
         """
         message_bytes = b64decode(message)
         if len(message_bytes) < 48:
@@ -255,5 +255,14 @@ class PBEUtil(object):
         actual_mac = HMAC(self.key, message_bytes[32:], SHA256).digest()
         if actual_mac != expect_mac:
             raise InvalidMessageAuthenticationCode()
-        clear_bytes = self.decrypt_guts(message_bytes[32:])
+        return self.decrypt_guts(message_bytes[32:])
+
+    def decrypt(self, message):
+        """
+        Decrypt a message that is encoded in Base64 consisting of a mac, an iv, and ciphertext
+
+        :param: message: must be a base64 encoded string
+        :return: A clear text string
+        """
+        clear_bytes = self.decrypt_bytes(message)
         return clear_bytes.decode('utf-8')
