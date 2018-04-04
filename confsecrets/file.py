@@ -10,4 +10,5 @@
 
 
 
-
+# With configparser, we can use either a superclass to provide encryption/decryption of scalars.
+# We can also use a custom "interpolation" to provide decryption.
