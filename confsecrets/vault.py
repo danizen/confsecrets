@@ -4,6 +4,7 @@ Implement a generic Vault class and encode concept of a DefaultVaault in a singl
 import os
 from threading import Lock
 from collections import UserDict, OrderedDict
+from .config import Config
 from .pbe import PBEUtil
 import json
 
@@ -118,5 +119,30 @@ class Vault(UserDict):
 class DefaultVault(Vault):
     """
     A singleton vault whose parameters come from the environment by default
+    The parameters can be initialized by calling `init` classmethod before instantiating
     """
-    pass
+    __instance = None
+    __salt = os.environ.get(Config.SALT.value, None)
+    __key = os.environ.get(Config.KEY.value, None)
+    __path = os.environ.get(Config.PATH.value, None)
+
+    def __new__(cls):
+        if cls.__instance is None:
+            DefaultVault.__instance = object.__new__(cls)
+        return DefaultVault.__instance
+
+    def __init__(self):
+        salt = DefaultVault.__salt
+        key = DefaultVault.__key
+        path = DefaultVault.__path
+        super().__init__(salt, key, path)
+
+    @classmethod
+    def init(cls, salt=None, key=None, path=None):
+        """
+        Change the defaults before the vault is initialized
+        """
+        assert cls.__instance is None
+        DefaultVault.__salt = salt
+        DefaultVault.__key = key
+        DefaultVault.__path = path
