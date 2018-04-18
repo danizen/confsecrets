@@ -125,5 +125,6 @@ Not sure on the priority of these:
 
 ## Status
 
-The only facility so far available is Password Based Encryption (PBE) on the filesystem or in the environment.
+Have implemented the `Vault`, `DefaultVault`, and initial `Secret` facilities.
+Need to create the Django application with settings and with management commands.
 
