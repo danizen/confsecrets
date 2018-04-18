@@ -55,9 +55,9 @@ as long as you aren't saving too many secrets in it.
 
 Saving secrets becomes easy through a management command to populate the vault:
 
-  * `decryptsecrets` - decrypts a vault to stdout
-  * `encryptsecrets`- encrypts a vault from stdin
-  * `listsecrets` - lists the secrets stored in the vault
+  * `decryptvault` - decrypts a vault to stdout
+  * `encryptvault`- encrypts a vault from stdin
+  * `listvault` - lists the secrets stored in the vault
   * `putsecret <name> [--value <value>]` - uses value if present, otherwise uses stdin
   * `getsecret <name>` - typical options, outputs the secret to the stdout
   * `rmsecret <name>` - removes an encrypted value from the vault
