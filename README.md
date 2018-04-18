@@ -24,78 +24,98 @@ in the lower-end code, and also support encrypted YAML or JSON.
 ## API Ideas
 
 We could make this more complicated by integrating with 3rd party solutions such as S3, HashiCorp vault,
-or we could provide some simpler utilities.
+or we could provide some simpler utilities.  The goal here is to reach the point where we can keep
+multiple secrets in the same encrypted wodge, decrypted with the same passwords, and provide some
+command-line over them that is easily integrated into Django.
 
 How about this:
-  - Confsecrets looks for a configuration file with three fallbacks:
-      * CONFSECRETS_CONFIG - if defined, and the file exists, this is the configuration.
-      * $HOME/.confsecrets - if exists, then is the configuration
+  - implement `confsecrets\vault.py` which contains a `Vault` class that is a subclass of UserDict, maybe OrderedDict.
+  - The vault has the following init:
 
-  - This file defines the following configuration:
-      * salt = string that is the salt, and is interpreted as a binary dump
-      * key = the key itself
-      * vault = a path to the vault
+      Vault(key=, salt=, path=, encoder=, decoder=)
 
-  - These can all be overridden with environment variables (these take priority):
-      * CONFSECRETS_SALT
-      * CONFSECRETS_KEY
-      * CONFSECRETS_VAULT
+  - It implements it encrypts using the the salt and key to base64.
+  - Encrypting immediately flushes the file that has been loaded
+  - On decrypt, it checks to see if the file has changed, and reloads the underlying data in that case.
+  - On decrypt, it reverses the process.
 
-Without any of these, the salt must be provided, and the key must be provided.
+There is a concept of a "default vault" whose configuration is controlled by environment variables or through the API.
+The "default vault" is is a singleton.   
 
-Confsecrets can the provide a command-line to populate the vault:
+Django integration is provided via a `confsecrets.django` application that allows the configuration to be provided by settings:
 
-  * confsecrets config - writes $HOME/.confsecrets, options are: --salt (will be generated), --key (will be generated), --vault (will be generated)
-  * confsecrets key check
-  * confsecrets key generate
-  * confsecrets vault init <key> - creates a vault, options are --key, --salt, --vault
-  * confsecrets vault decrypt - decrypts a vault to a YAML file, options are --key, --salt, and --vault
-  * confsecrets set <name> [--value <value>] - typical options, uses value if present, otherwise uses stdin
-  * confsecrets get <name> - typical options, outputs the secret to the stdout
-  * confsecrets remove <name> - removes an encrypted value from the vault
+    CONFSECRETS_SALT = b'89982hto'
+    CONFSECRETS_KEY = 'This is not an example'
+    CONFSECRETS_VAULT = os.path.join(BASE_DIR, 'vault.yaml')
 
-Within Django or Flask configuration, the secrets can be obtained as follows:
+This initializes the default vault during configuration freeze.   Otherwise, the default vault's configuration is controlled by th
+environment variables.
 
-  ES_PASSWORD = Secret('name')
+This is secure as long as the vault file is not stored in git, and then it becomes obfuscation.  However, it is easy to change the salt
+as long as you aren't saving too many secrets in it.
 
-To access it, you can use:
 
-  from django.conf import settings
-  from confsecrets import Vault;
+Saving secrets becomes easy through a management command to populate the vault:
 
-  settings.ES_PASSWORD.decrypt()
+  * decryptall - decrypts a vault to stdin YAML
+  * encryptall - encrypts a vault from stdin YAML
+  * setsecret <name> [--value <value>] - uses value if present, otherwise uses stdin
+  * getsecret <name> - typical options, outputs the secret to the stdout
+  * removesecret <name> - removes an encrypted value from the vault
+
+With the system configured, dealing with the vault becomes as easy as using Secret objects:
+
+    ES_PASSWORD = Secret('name')
+
+To access it, you can treat it like a string:
+
+    from django.conf import settings
+
+    settings.ES_PASSWORD.decrypt()
+
+It would also look string like:
+
+    int(str(settings.ES_PASSWORD))
   
-This will fail unless the key and vault are both accessible. It will also fail if that key is not in the vault.
+This will fail for a number of reasons with clear exceptions:
+   - If  the configuration is not available via settings or environment variables
+   - If the vault is not-present
+   - If the vault doesn't have that key in it
 
 Vault would then know how to deal with the operations described above.
 
-
 ## Development Plan
 
-- Create `confsecrets/vault.py` with a vault object:
+- Create `confsecrets/vault.py` with a `Vault` and `DefaultVault` class:
 
-```
-    Vault(salt=, path=, key=)
-```
+    - Vault(salt=, path=, key=) - you have to provide all of these
+    - DefaultVault() - this is a vault that is a singleton.   It also looks at the environment variables, but still accepts salt, path, key
 
-- Enhance to have configuration by providing a `VaultFactory` that uses a configuration file and/or environment.
+- Create `confsecrets\secrets.py` with a `BaseSecret` and `Secret` object.
 
-- Create a defaultVault() classmethod on VaultFactory that lazily creates the default vault, using another method,
-  The internal method first uses the CONFSECRETS_CONFIG, then $HOME/.confsecrets, and then overrides with 
-  environment variables.
+   - `BaseSecret` has a vault, which is either provided via `__init__` or is the `DefaultVault`
+   - `Secret` acts like a string.
 
-- Create the `Secret` object that points to a vault, and uses VaultFactory if none is provided.
+- Create a `confsecrets/django.py` that implements the settings, and creates the `DefaultVault`
 
-- Create a `confsecrets/cli.py` that implements the CLI.
-
-- Packaging
+- Create the management commands.
 
 ## Roadmap
 
-Add support for placing the vault in an URL, by trying to interpret the vault as an URL.  If the URL has a scheme, then 
-Vault becomes polymorphic because we implement a __new__ method that can return a LocalVault, an AmazonS3Vault, or a GoogleCloudStorageVault
+Not sure on the priority of these:
 
-This is a roadmap item.
+- Add supoprt for placing the vault in S3 or elsewhere, by trying to interpret the vault as an URL.  Vault becomes polymorphic because
+  if path is an URL, then we will create a different sub-class of `Vault` using an override of `__new__`.   A local path vault is still
+  standard.
+
+- Add support for placing the key in a file or on S3, and provide a command to rotate keys.  This requires a `Key` class which knows
+  how to get itself from wherever, or rotate itself.
+
+- Provide non-string secrets, which sub-class `BaseSecret` but like like other Python objects.  For dict/sequence types, avoid pickle 
+  for interoperation with Java.  Uses JSON, but allow the Vault to be initialized with a specific encoder/decoder.
+
+- Support usage without Django by providing a confsecrets console-script and a configuration file that influences the default vault.
+
 
 ## Status
 
