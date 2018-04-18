@@ -111,10 +111,10 @@ Not sure on the priority of these:
   if path is an URL, then we will create a different sub-class of `Vault` using an override of `__new__`.   A local path vault is still
   standard.
 
-- Provide non-string secrets, which sub-class `BaseSecret` but like like other Python objects.  For dict/sequence types, avoid pickle 
-  for interoperation with Java.  Uses JSON, but allow the Vault to be initialized with a specific encoder/decoder.
+- Provide non-string secrets, which sub-class `BaseSecret` but act like other Python objects. For dict/sequence types, avoid pickle 
+  for interoperation with Java. Uses JSON, but allow the Vault to be initialized with a specific encoder/decoder.
 
-- Add support for placing the key in a file or on S3, and provide a command to rotate keys.  This requires a `Key` class which knows
+- Add support for placing the key in a file or on S3, and provide a command to rotate keys. This requires a `Key` class which knows
   how to get itself from wherever, or rotate itself.
 
 - Support usage without Django by providing a confsecrets console-script and a configuration file that influences the default vault.
