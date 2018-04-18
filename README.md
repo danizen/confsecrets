@@ -99,7 +99,7 @@ Vault would then know how to deal with the operations described above.
    - `BaseSecret` has a vault, which is either provided via initializations or is the `DefaultVault`
    - `Secret` acts like a string.
 
-- Create a `confsecrets/django.py` that implements the settings, and creates the `DefaultVault`
+- Create a Django app in `confsecrets/django/` that implements the settings, and creates the `DefaultVault`
 
 - Create the management commands.
 
