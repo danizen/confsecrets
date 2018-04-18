@@ -114,6 +114,9 @@ Not sure on the priority of these:
 - Provide non-string secrets, which sub-class `BaseSecret` but act like other Python objects. For dict/sequence types, avoid pickle 
   for interoperation with Java. Uses JSON, but allow the Vault to be initialized with a specific encoder/decoder.
 
+- Provide a Java implementation, so that Konstantin can update PDB to store secrets in such a vault. The concept of storing multiple 
+  secrets in the same application vault might break it, so discuss first.
+
 - Add support for placing the key in a file or on S3, and provide a command to rotate keys. This requires a `Key` class which knows
   how to get itself from wherever, or rotate itself.
 
