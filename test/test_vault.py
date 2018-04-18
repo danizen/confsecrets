@@ -106,20 +106,3 @@ class TestNewVault(TestCase):
         othervault = Vault(self.salt, self.password, self.path)
         actual_value = othervault['PASSWORD']
         self.assertEqual(actual_value, expected_value)
-
-
-class TestDefaultVault(TestCase):
-
-    def setUp(self):
-        self.salt = b'\xe2\x98\xe5\xdc\xeb\xf5\xcc\xd8'
-        self.password = 'This is just a test'
-        fd, fnm = tempfile.mkstemp(prefix='vault-')
-        os.close(fd)
-        os.unlink(fnm)
-        self.path = fnm
-
-    def test_multiple_vaults(self):
-        DefaultVault.init(self.salt, self.password, self.path)
-        vault1 = DefaultVault()
-        vault2 = DefaultVault()
-        self.assertIs(vault1, vault2)

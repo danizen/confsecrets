@@ -140,9 +140,8 @@ class DefaultVault(Vault):
     @classmethod
     def init(cls, salt=None, key=None, path=None):
         """
-        Change the defaults before the vault is initialized
+        Change the defaults before the vault is initialized, or it has no affect
         """
-        assert cls.__instance is None
         DefaultVault.__salt = salt
         DefaultVault.__key = key
         DefaultVault.__path = path
