@@ -4,4 +4,5 @@ pip>=9.0.1
 pylint
 coverage
 tox
+flake8
 ipython>=5.6.0

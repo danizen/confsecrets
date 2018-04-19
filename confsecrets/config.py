@@ -6,6 +6,7 @@ from enum import Enum
 
 __all__ = ('Config', )
 
+
 class Config(Enum):
     """
     Things that may appear in environment or settings
@@ -13,4 +14,3 @@ class Config(Enum):
     SALT = 'CONFSECRETS_SALT'
     KEY = 'CONFSECRETS_KEY'
     PATH = 'CONFSECRETS_PATH'
-

@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 from django.conf import settings
 
-from confsecrets.config import Config
+from confsecrets.vault import DefaultVault
 
 # load default settings
 __DEFAULTS = {
@@ -23,4 +23,3 @@ class ConfsecretsConfig(AppConfig):
         path = settings.CONFSECRETS_PATH
 
         DefaultVault.init(salt, key, path)
-

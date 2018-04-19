@@ -150,6 +150,7 @@ class PasswordUtil():
         if length < cls.min_length:
             length = cls.min_length
         required_classes = list(cls.required_classes)
+
         def generate_candidate(length):
             bpass = bytearray(length)
             for i in range(length):
@@ -186,7 +187,7 @@ class PBEUtil(object):
         try:
             salt = bytes(salt)
             assert len(salt) == 8
-        except:
+        except Exception:
             raise InvalidSalt
         self.password = password
         if salt is not None:
