@@ -1,7 +1,6 @@
 """
 Implement secrets that know their type and are stored in a vault
 """
-import reprlib
 from .vault import DefaultVault
 
 

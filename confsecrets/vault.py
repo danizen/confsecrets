@@ -91,7 +91,7 @@ class Vault(UserDict):
             self.lock.release()
 
     def freshen(self):
-        current_status  = self.status()
+        current_status = self.status()
         if current_status != self.last_status:
             self.read()
             self.last_status = current_status

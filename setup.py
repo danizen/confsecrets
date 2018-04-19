@@ -2,9 +2,6 @@
 import os
 import subprocess
 
-from pip.download import PipSession
-from pip.req import parse_requirements
-
 from setuptools import setup, find_packages
 
 
@@ -28,25 +25,6 @@ def get_readme():
         return f.read()
 
 
-def get_dependencies(path):
-    """
-    Parse requirements files using pip internals and return only the name of the requirement
-    """
-    return [dep.name for dep in parse_requirements(path, session=PipSession())]
-
-
-def get_tests_require():
-    # tests require everything in requirements.txt
-    return get_dependencies('requirements.txt')
-
-
-def get_install_requires():
-    # requirements.txt contains everything to run and test, because that's what CI/CD uses.
-    # to build proper install-requires, strip out pytest packages.
-    return list(filter(lambda name: not 'nose' in name, get_dependencies('requirements.txt')))
-
-
-
 setup(
     name='confsecrets',
     version=get_version(),
@@ -64,8 +42,8 @@ setup(
     #        'pbetool=confsecrets.pbetool:main',
     #    ]
     #},
-    tests_require=get_tests_require(),
-    install_requires=get_install_requires(),
+    tests_require=['nose', 'rednose', 'tox', 'PyCrypto', 'six'],
+    install_requires=['PyCrypto', 'six'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'License :: Public Domain',
