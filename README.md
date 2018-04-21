@@ -20,6 +20,18 @@ are actually solutions, namely:
 
 Some secrets may be different from passwords, but that is the blue sky future.
 
+## Consideration of pyjks
+
+- Doesn't support saving jceks
+- Can load from string, so we could use it as keystore format and add S3 and stuff
+
+## Consideration of keyczar
+
+- Manages encryption, but doesn't support MFA keys - e.g. not a vault in which to store
+  encrypted material.
+- Doesn't directly support use of S3 or HashiCorp vault as a backend, only itself.
+- Doesn't offer management of secrets, just management of keys.
+
 ## API Ideas
 
 The goal here is to reach the point where we can keep multiple secrets in the same 
