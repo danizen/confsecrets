@@ -72,7 +72,16 @@ def main(args):
     if not args:
         usage()
         sys.exit(1)
-    retcode = call_command(args[0], args[1:])
+    if len(args) == 0:
+        command = 'help'
+        args = []
+    elif len(args) == 1:
+        command = args[0]
+        args = []
+    else:
+        command = argss[0]
+        args = args[1:]
+    retcode = call_command(command, args)
     sys.exit(retcode)
 
 
