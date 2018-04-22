@@ -38,7 +38,7 @@ def call_command(name, args):
 
     func = COMMANDS[name]
     if func.parser is None:
-        return func(args)
+        return func(*args)
 
     opts = func.parser.parse_args(args)
     return func(opts)
@@ -49,7 +49,7 @@ def usage():
     return 1
 
 
-@command
+@command(name='help')
 def help_call():
     for name in sorted(COMMANDS.keys()):
         func = COMMANDS[name]
@@ -63,7 +63,7 @@ def help_call():
             print('    %s' % name)
 
 
-@command
+@command()
 def salt():
     print(Random.new().read(8))
 
