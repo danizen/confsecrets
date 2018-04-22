@@ -37,11 +37,11 @@ setup(
     packages=[
         'confsecrets',
     ],
-    #entry_points={
-    #    'console_scripts': [
-    #        'pbetool=confsecrets.pbetool:main',
-    #    ]
-    #},
+    entry_points={
+        'console_scripts': [
+            'confsecrets=confsecrets.cli:main',
+        ]
+    },
     tests_require=['nose', 'rednose', 'tox', 'PyCrypto', 'six'],
     install_requires=['PyCrypto', 'six'],
     classifiers=[
