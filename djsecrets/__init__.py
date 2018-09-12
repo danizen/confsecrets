@@ -1,1 +1,1 @@
-from confsecrets.vault import DefaultVault as Vault
+from confsecrets.secrets import *

@@ -3,8 +3,13 @@ Implement secrets that know their type and are stored in a vault
 """
 from .vault import DefaultVault
 
+__all__ = (
+    'BaseSecret',
+    'Secret',
+)
 
-class BaseSecret():
+
+class BaseSecret:
     """
     A secret is stored in a vault using a string name
     """
@@ -30,7 +35,7 @@ class BaseSecret():
 
 class Secret(BaseSecret):
     """
-    Usually secrets, are strings
+    Usually secrets are strings
     """
     def __str__(self):
         return self.get()
@@ -41,6 +46,12 @@ class Secret(BaseSecret):
     def __iter__(self):
         for c in self.__str__():
             yield c
+
+    def __bool__(self):
+        return self.get().lower() in ('yes', 'true', '1')
+
+    def __int__(self):
+        return int(self.get())
 
     def strip(self, *args):
         return self.__str__().strip(*args)
