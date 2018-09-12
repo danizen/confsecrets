@@ -3,6 +3,7 @@ Implement a generic Vault class and encode concept of a DefaultVaault in a singl
 """
 import os
 from threading import Lock
+from base64 import b64decode, b64encode
 from collections import UserDict, OrderedDict
 from .config import Config
 from .pbe import PBEUtil
@@ -108,13 +109,11 @@ class Vault(UserDict):
         self.write()
         return retval
 
-    def keys(self):
-        self.freshen()
-        return self.data.keys()
-
     def __delitem__(self, name):
         self.freshen()
-        return super().__delitem__(str(name))
+        retval = super().__delitem__(str(name))
+        self.write()
+        return retval
 
     def __repr__(self):
         return '<Vault object path=%s>' % self.path
@@ -126,9 +125,9 @@ class DefaultVault(Vault):
     The parameters can be initialized by calling `init` classmethod before instantiating
     """
     __instance = None
-    __salt = os.environ.get(Config.SALT.value, None)
-    __key = os.environ.get(Config.KEY.value, None)
-    __path = os.environ.get(Config.PATH.value, None)
+    SALT = None
+    KEY = os.environ.get(Config.KEY.value, None)
+    PATH = os.environ.get(Config.PATH.value, None)
 
     def __new__(cls):
         if cls.__instance is None:
@@ -136,16 +135,23 @@ class DefaultVault(Vault):
         return DefaultVault.__instance
 
     def __init__(self):
-        salt = DefaultVault.__salt
-        key = DefaultVault.__key
-        path = DefaultVault.__path
+        salt = DefaultVault.SALT
+        if not salt:
+            default_salt = os.environ.get(Config.SALT.value, None)
+            if default_salt:
+                salt = b64decode(default_salt)
+        key = DefaultVault.KEY
+        path = DefaultVault.PATH
         super().__init__(salt, key, path)
 
     @classmethod
-    def init(cls, salt=None, key=None, path=None):
+    def init(cls, salt=None, key=None, path=None, **kwargs):
         """
         Change the defaults before the vault is initialized, or it has no affect
         """
-        DefaultVault.__salt = salt
-        DefaultVault.__key = key
-        DefaultVault.__path = path
+        if salt:
+            DefaultVault.SALT = salt
+        if key:
+            DefaultVault.KEY = key
+        if path:
+            DefaultVault.PATH = path

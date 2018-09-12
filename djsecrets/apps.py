@@ -21,10 +21,4 @@ class ConfsecretsConfig(AppConfig):
         salt = settings.CONFSECRETS_SALT
         key = settings.CONFSECRETS_KEY
         path = settings.CONFSECRETS_PATH
-
-        # DefaultVault.init() is not enough - we have to create the default vault here,
-        # because any secrets in settings will instantiate the default vault.
-        vault = DefaultVault()
-        vault.salt = salt
-        vault.key = key
-        vault.path = path
+        DefaultVault.init(salt, key, path)

@@ -1,0 +1,1 @@
+from confsecrets.vault import DefaultVault as Vault
