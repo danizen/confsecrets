@@ -1,5 +1,5 @@
 ---
-title: Django Integration
+title: confsecrets | Django Integration
 ---
 
 ## Settings

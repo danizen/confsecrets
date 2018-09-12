@@ -1,5 +1,5 @@
 ---
-title: Getting Started
+title: confsecrets | Getting Started
 ---
 
 ## Summary
