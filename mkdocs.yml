@@ -4,3 +4,5 @@ nav:
     - Django Integration: django.md
     - API Reference: api.md
 theme: readthedocs
+markdown_extensions:
+  - admonition
