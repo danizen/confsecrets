@@ -6,6 +6,7 @@ nav:
 theme: readthedocs
 repo_name: BitBucket
 repo_url: https://git-scm.nlm.nih.gov/projects/PYTHON/repos/confsecrets/
+edit_uri: browse/docs/
 site_author: Dan Davis
 site_description: A python module for symmetric encryption
 markdown_extensions:
