@@ -4,5 +4,9 @@ nav:
     - Django Integration: django.md
     - API Reference: api.md
 theme: readthedocs
+repo_name: BitBucket
+repo_url: https://git-scm.nlm.nih.gov/projects/PYTHON/repos/confsecrets/
+site_author: Dan Davis
+site_description: A python module for symmetric encryption
 markdown_extensions:
   - admonition
