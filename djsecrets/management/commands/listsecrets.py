@@ -13,8 +13,8 @@ class Command(VaultConfigMixin, BaseCommand):
         self.configure_vault(**opts)
 
         if len(self.vault):
-            print('Keys:')
-            for key in self.vault.keys():
-                print('\t{}'.format(key))
+            print('Secrets:')
+            for key in sorted(self.vault.keys()):
+                print('\t{} = {}'.format(key, self.vault[key]))
         else:
-            print('No keys')
+            print('No secrets')
