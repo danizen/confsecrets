@@ -108,6 +108,10 @@ class Vault(UserDict):
         self.write()
         return retval
 
+    def keys(self):
+        self.freshen()
+        return self.data.keys()
+
     def __delitem__(self, name):
         self.freshen()
         return super().__delitem__(str(name))
