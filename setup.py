@@ -40,7 +40,7 @@ setup(
     ],
     #entry_points={
     #    'console_scripts': [
-    #        'pbetool=confsecrets.pbetool:main',
+    #        'confsecrets=confsecrets.cli:main',
     #    ]
     #},
     tests_require=['nose', 'rednose', 'tox', 'PyCrypto', 'six'],

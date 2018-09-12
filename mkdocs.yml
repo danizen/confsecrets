@@ -1,0 +1,6 @@
+site_name: confsecrets
+nav:
+    - Getting Started: index.md
+    - Django Integration: django.md
+    - API Reference: api.md
+theme: readthedocs

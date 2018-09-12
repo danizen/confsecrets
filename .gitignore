@@ -13,6 +13,7 @@ __pycache__/
 *.egg-info
 /dist/
 /build/
+/site/
 
 # Installer logs
 pip-log.txt
@@ -22,6 +23,7 @@ pip-log.txt
 coverage
 .tox
 junit.xml
+VERSION.txt
 
 # IDEs
 /.idea/
