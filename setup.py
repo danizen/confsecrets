@@ -36,6 +36,7 @@ setup(
     url='https://git-scm.nlm.nih.gov/projects/PYTHON/repos/confsecrets/',
     packages=[
         'confsecrets',
+        'djsecrets',
     ],
     #entry_points={
     #    'console_scripts': [

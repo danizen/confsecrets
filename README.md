@@ -55,9 +55,7 @@ as long as you aren't saving too many secrets in it.
 
 Saving secrets becomes easy through a management command to populate the vault:
 
-  * `decryptvault` - decrypts a vault to stdout
-  * `encryptvault`- encrypts a vault from stdin
-  * `listvault` - lists the secrets stored in the vault
+  * `listsecrets` - lists the secrets stored in the vault, along with their value
   * `putsecret <name> [--value <value>]` - uses value if present, otherwise uses stdin
   * `getsecret <name>` - typical options, outputs the secret to the stdout
   * `rmsecret <name>` - removes an encrypted value from the vault
@@ -87,25 +85,11 @@ This will fail for a number of reasons with clear exceptions:
 
 Vault would then know how to deal with the operations described above.
 
-## Development Plan
-
-- Create `confsecrets/vault.py` with a `Vault` and `DefaultVault` class:
-
-    - `Vault(salt=, path=, key=)` - you have to provide all of these
-    - `DefaultVault()` - this is a vault that is a singleton.   It also looks at the environment variables, but still accepts salt, path, key
-
-- Create `confsecrets\secrets.py` with a `BaseSecret` and `Secret` class.
-
-   - `BaseSecret` has a vault, which is either provided via initializations or is the `DefaultVault`
-   - `Secret` acts like a string.
-
-- Create a Django app in `confsecrets/django/` that implements the settings, and creates the `DefaultVault`
-
-- Create the management commands.
-
 ## Roadmap
 
 Not sure on the priority of these:
+
+- Add support for a default value for a secret, so that you get the default instead of KeyError
 
 - Add supoprt for placing the vault in S3 or elsewhere, by trying to interpret the vault as an URL.  Vault becomes polymorphic because
   if path is an URL, then we will create a different sub-class of `Vault` using an override of `__new__`.   A local path vault is still
