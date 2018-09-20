@@ -4,5 +4,6 @@ pip>=9.0.1
 pylint
 coverage
 tox
+mkdocs
 flake8
 ipython>=5.6.0
