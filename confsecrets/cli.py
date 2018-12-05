@@ -79,7 +79,7 @@ def main(args):
         command = args[0]
         args = []
     else:
-        command = argss[0]
+        command = args[0]
         args = args[1:]
     retcode = call_command(command, args)
     sys.exit(retcode)

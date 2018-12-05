@@ -3,7 +3,7 @@ Implement a generic Vault class and encode concept of a DefaultVaault in a singl
 """
 import os
 from threading import Lock
-from base64 import b64decode, b64encode
+from base64 import b64decode
 from collections import UserDict, OrderedDict
 from .config import Config
 from .pbe import PBEUtil

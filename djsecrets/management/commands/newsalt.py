@@ -16,4 +16,3 @@ class Command(BaseCommand):
         if opts['encode']:
             salt = b64encode(salt).decode('utf-8')
         print(salt)
-

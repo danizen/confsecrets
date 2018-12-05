@@ -1,1 +1,1 @@
-from confsecrets.secrets import *
+from confsecrets.secrets import BaseSecret, Secret   # noqa: F401
