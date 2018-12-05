@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="Dan Davis">
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>API Reference - confsecrets</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "API Reference";
+    var mkdocs_page_input_path = "api.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> confsecrets</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Getting Started</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../django/">Django Integration</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">API Reference</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#confsecretspbe">confsecrets.pbe</a></li>
+    
+
+    <li class="toctree-l2"><a href="#confsecretsvault">confsecrets.vault</a></li>
+    
+
+    <li class="toctree-l2"><a href="#confsecretssecrets">confsecrets.secrets</a></li>
+    
+
+    <li class="toctree-l2"><a href="#djsecrets">djsecrets</a></li>
+    
+
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">confsecrets</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>API Reference</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://git-scm.nlm.nih.gov/projects/PYTHON/repos/confsecrets/browse/docs/api.md"
+          class="icon icon-bitbucket"> Edit on BitBucket</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="confsecretspbe"><code>confsecrets.pbe</code></h2>
+<p>Provides secure, symmetric encryption without much around it.</p>
+<p>Includes these exceptions:</p>
+<ul>
+<li><code>confsecrets.pbe.InvalidSalt</code> - raised for an invalid salt</li>
+<li><code>confsecrets.pbe.MessageTooShort</code> - raised when attempting to decrypt a message that has no room for IV, ciphertext, and MAC</li>
+<li><code>confsecrets.pbe.InvalidMessageAuthenticationCode</code> - raised when decrypting a message with an invalid MAC</li>
+<li><code>confsecrets.pbe.PasswordTooSimple</code> - raised when <code>PasswordUtil</code> receives a password that is not complex enough.</li>
+<li><code>confsecrets.pbe.PasswordNotShellSafe</code> - raised when <code>PasswordUtil</code> receives a password that must be escaped from a Linux shell. </li>
+</ul>
+<p>Includes these types:</p>
+<ul>
+<li><code>confsecrets.pbe.PasswordUtil</code>:<ul>
+<li><code>PasswordUtil.check</code> - a static method that checks a password for length, complexity, and shell safety.</li>
+<li><code>PasswordUtil.generate</code> - a static method that generates a password matching above rules </li>
+</ul>
+</li>
+<li><code>confsecrets.pbe.PBEUtil</code> - This is the heart of the module, providing secure, symmetric encryption.</li>
+</ul>
+<h2 id="confsecretsvault"><code>confsecrets.vault</code></h2>
+<p>Implements a file-based container of encrypted material.  Each piece of encrypted material is accessed via a key.</p>
+<p>Includes these exceptions:</p>
+<ul>
+<li><code>confsecrets.vault.VaultPathMissing</code> - raised when no path has been provided</li>
+<li><code>confsecrets.vault.VaultNotFound</code> - raised for operating systems errors accessing the vault </li>
+<li><code>confsecrets.vault.VaultFormatError</code> - raised when the vault is in an invalid format</li>
+</ul>
+<p>Includes these types:</p>
+<ul>
+<li><code>confsecrets.vault.Vault</code> - A dictionary type that stores its values as encrypted, base64 encoded messages within a JSON or YAML file. </li>
+<li><code>confsecrets.vault.DefaultVault</code> - A vault with global parameters that functions as a singleton</li>
+</ul>
+<h2 id="confsecretssecrets"><code>confsecrets.secrets</code></h2>
+<p>Provides objects that behave like strings or other types, which are backed by the vault.</p>
+<p>Includes these types:</p>
+<ul>
+<li><code>confsecrets.secrets.BaseSecret</code> - A base secret simply knows how to set and get its value from a vault. If no vault is provided, it uses the <code>DefaultVault</code>.</li>
+<li><code>confsecrets.secrets.Secret</code> - A secret that behaves like a string in string contexts.</li>
+</ul>
+<h2 id="djsecrets"><code>djsecrets</code></h2>
+<p>Implements a Django application for secret management:</p>
+<p>Includes these management commands:</p>
+<ul>
+<li>listsecrets - lists all secrets in the vault</li>
+<li>putsecret - Save a secret and its value into the vault</li>
+<li>getsecret - Gets the value of a single secret from the vault</li>
+<li>rmsecret - Remove a secret from the vault</li>
+</ul>
+<p>Includes these settings:</p>
+<ul>
+<li><code>CONFSECRETS_SALT</code> - An 8-byte binary value.</li>
+<li><code>CONFSECRETS_PATH</code> - A file system path</li>
+<li><code>CONFSECRETS_KEY</code> - A clear-text key that is converted to a binary key</li>
+</ul>
+<p>Includes these types:</p>
+<ul>
+<li><code>djsecrets.Secret</code> - an alias for <code>confsecrets.secrets.Secret</code></li>
+<li><code>djsecrets.BaseSecret</code> - an alias for <code>confsecrets.secrets.BaseSecret</code></li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="../django/" class="btn btn-neutral" title="Django Integration"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../django/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>
