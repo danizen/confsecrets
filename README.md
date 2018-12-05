@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/danizen/confsecrets.svg?branch=master)](https://travis-ci.org/danizen/confsecrets)
+
 # confsecrets
 
 ## Summary
