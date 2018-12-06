@@ -150,12 +150,13 @@
 <p>Includes these types:</p>
 <ul>
 <li><code>confsecrets.secrets.BaseSecret</code> - A base secret simply knows how to set and get its value from a vault. If no vault is provided, it uses the <code>DefaultVault</code>.</li>
-<li><code>confsecrets.secrets.Secret</code> - A secret that behaves like a string in string contexts.</li>
+<li><code>confsecrets.secrets.Secret</code> - A secret that behaves like a string in string contexts, a bool in bool contexts, and so on.</li>
 </ul>
 <h2 id="djsecrets"><code>djsecrets</code></h2>
 <p>Implements a Django application for secret management:</p>
 <p>Includes these management commands:</p>
 <ul>
+<li>newsalt - Generates a new random salt for encryption</li>
 <li>listsecrets - lists all secrets in the vault</li>
 <li>putsecret - Save a secret and its value into the vault</li>
 <li>getsecret - Gets the value of a single secret from the vault</li>
