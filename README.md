@@ -1,11 +1,11 @@
 # confsecrets
 [![Build Status](https://travis-ci.org/danizen/confsecrets.svg?branch=master)](https://travis-ci.org/danizen/confsecrets) [![Coverage Status](https://coveralls.io/repos/github/danizen/confsecrets/badge.svg?branch=master)](https://coveralls.io/github/danizen/confsecrets?branch=master)
 
-Simple utility package to symmetrically encrypt/decrypt application configuration secrets flexibly.
+Simple utility/package to symmetrically encrypt/decrypt application secrets.
 
 ## Description
 
-It is often difficult for developers to manage passwords for databases, search
+It is often difficult for developers to secure passwords for databases, search
 engines, directory services, etc.  Security wishes to make sure these secrets
 are centralized, but this adds a dependency on an external service, not to
 mention code complexity.
@@ -15,9 +15,11 @@ around them.
 
 The goal of this project is to provide APIs that wrap the simplest solutions that
 are actually solutions, namely:
- - Keeping passwords as encrypted values on the filesystem, in the code, or in S3 objects
+ - Keeping passwords as encrypted values on the filesystem, with a passphrase in the code.
 
-Some secrets may be different from passwords, but that is the blue sky future.
+Future versions will add the ability to keep the encrypted material in S3, or
+another cloud storage provider, and to keep the passphrase from which a key is
+derived also in cloud storage.
 
 ## Other Tools
 
