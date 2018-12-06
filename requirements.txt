@@ -3,7 +3,6 @@ PyCrypto>=2.6.1
 six
 
 # for testing
-Django>=1.11,<2
 pytest
 pytest-cov
 coverage
