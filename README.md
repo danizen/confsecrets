@@ -101,7 +101,7 @@ Vault would then know how to deal with the operations described above.
 
 ## Self-critique
 
-This is not as clear as the 12factor app. A vault like this could be used outside of Django in a twelve-factor fashion, and then have configuration passed in as environment variables. However, Django's settings sort of work against 12factor anyway.
+This way of doing things does not fully comply the [Twelve-Factor App](https://12factor.net/) way of managing the environment.  Django's settings are similarly response to the environment while recognizing that configuration solely via the environment is complicated.
 
 ## Roadmap
 
