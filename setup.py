@@ -33,7 +33,10 @@ setup(
     long_description_content_type='text/markdown; charset=UTF-8; variant=CommonMark',
     author='Dan Davis',
     author_email='daniel.davis@nih.gov',
-    url='https://git-scm.nlm.nih.gov/projects/PYTHON/repos/confsecrets/',
+    url='https://github.com/danizen/confsecrets.git',
+    project_urls={
+        'Documentation': 'https://danizen.github.io/confsecrets/',
+    },
     packages=[
         'confsecrets',
         'djsecrets',
@@ -43,7 +46,7 @@ setup(
     #        'confsecrets=confsecrets.cli:main',
     #    ]
     #},
-    tests_require=['nose', 'rednose', 'tox', 'PyCrypto', 'six'],
+    tests_require=['pytest', 'pytest-cov', 'flake8', 'Django>1.11,<2', 'coverage', 'tox', 'PyCrypto', 'six'],
     install_requires=['PyCrypto', 'six'],
     classifiers=[
         'Development Status :: 4 - Beta',

@@ -1,9 +1,6 @@
 -r requirements.txt
 
-pip>=9.0.1
-pylint
-coverage
 tox
+twine
 mkdocs
-flake8
 ipython>=5.6.0

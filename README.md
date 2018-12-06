@@ -1,6 +1,8 @@
 # confsecrets
 [![Build Status](https://travis-ci.org/danizen/confsecrets.svg?branch=master)](https://travis-ci.org/danizen/confsecrets)
 
+[![Coverage Status](https://coveralls.io/repos/github/danizen/confsecrets/badge.svg?branch=master)](https://coveralls.io/github/danizen/confsecrets?branch=master)
+
 ## Summary
 
 Simple utilities/modules to encrypt/decrypt application configuration secrets flexibly.
