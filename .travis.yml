@@ -4,7 +4,8 @@ python:
   - "3.4"
   - "3.5"
   - "3.6"
-install: pip install tox-travis coveralls-python
+install: pip install tox-travis coveralls
+# NOTE: tox below will install what it needs in another virtualenv
 script: tox
 after_success:
   - coveralls
