@@ -43,7 +43,7 @@ Provides objects that behave like strings or other types, which are backed by th
 Includes these types:
 
 - `confsecrets.secrets.BaseSecret` - A base secret simply knows how to set and get its value from a vault. If no vault is provided, it uses the `DefaultVault`.
-- `confsecrets.secrets.Secret` - A secret that behaves like a string in string contexts.
+- `confsecrets.secrets.Secret` - A secret that behaves like a string in string contexts, a bool in bool contexts, and so on.
 
 ## `djsecrets`
 
@@ -51,6 +51,7 @@ Implements a Django application for secret management:
 
 Includes these management commands:
 
+- newsalt - Generates a new random salt for encryption
 - listsecrets - lists all secrets in the vault
 - putsecret - Save a secret and its value into the vault
 - getsecret - Gets the value of a single secret from the vault
