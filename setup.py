@@ -32,7 +32,9 @@ setup(
     long_description=get_readme(),
     long_description_content_type='text/markdown; charset=UTF-8; variant=CommonMark',
     author='Dan Davis',
-    author_email='daniel.davis@nih.gov',
+    author_email='dan@danizen.net',
+    maintainer='Dan Davis',
+    maintainer_email='dan@danizen.net',
     url='https://github.com/danizen/confsecrets.git',
     project_urls={
         'Documentation': 'https://danizen.github.io/confsecrets/',
