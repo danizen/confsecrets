@@ -1,9 +1,7 @@
 # confsecrets
 [![Build Status](https://travis-ci.org/danizen/confsecrets.svg?branch=master)](https://travis-ci.org/danizen/confsecrets) [![Coverage Status](https://coveralls.io/repos/github/danizen/confsecrets/badge.svg?branch=master)](https://coveralls.io/github/danizen/confsecrets?branch=master)
 
-## Summary
-
-Simple utilities/modules to encrypt/decrypt application configuration secrets flexibly.
+Simple utility package to symmetrically encrypt/decrypt application configuration secrets flexibly.
 
 ## Description
 
@@ -21,19 +19,25 @@ are actually solutions, namely:
 
 Some secrets may be different from passwords, but that is the blue sky future.
 
-## Consideration of pyjks
+## Other Tools
+
+### pyjks
 
 - Doesn't support saving jceks
 - Can load from string, so we could use it as keystore format and add S3 and stuff
 
-## Consideration of keyczar
+### keyczar
 
 - Manages encryption, but doesn't support MFA keys - e.g. not a vault in which to store
   encrypted material.
 - Doesn't directly support use of S3 or HashiCorp vault as a backend, only itself.
 - Doesn't offer management of secrets, just management of keys.
 
-## API Ideas
+### EC2 Secrets Manager
+
+- Again, this is a central play, and locks you in somewhat to the vendor.
+
+## Concept of Operation
 
 The goal here is to reach the point where we can keep multiple secrets in the same 
 encrypted wodge, decrypted with the same passwords, and provide some command-line over 
@@ -59,12 +63,9 @@ Django integration is provided via a `confsecrets.django` application that allow
     CONFSECRETS_KEY = 'This is not an example'
     CONFSECRETS_VAULT = os.path.join(BASE_DIR, 'vault.yaml')
 
-This initializes the default vault during configuration freeze.   Otherwise, the default vault's configuration is controlled by th
-environment variables.
+This initializes the default vault during configuration freeze. Otherwise, the default vault's configuration is controlled by the environment variables.
 
-This is secure as long as the vault file is not stored in git, and then it becomes obfuscation.  However, it is easy to change the salt
-as long as you aren't saving too many secrets in it.
-
+This is secure as long as the vault file are not stored in git, and then it becomes obfuscation. It is best when both the passphrase from which a key is derived is also outside of git.
 
 Saving secrets becomes easy through a management command to populate the vault:
 
@@ -75,7 +76,7 @@ Saving secrets becomes easy through a management command to populate the vault:
 
 With the system configured, dealing with the vault becomes as easy as using Secret objects:
 
-    ES_PASSWORD = Secret('name')
+    ELASTICSEARCH_PASSWORD = Secret('name')
 
 To access it, you can treat it like a string:
 
@@ -98,30 +99,29 @@ This will fail for a number of reasons with clear exceptions:
 
 Vault would then know how to deal with the operations described above.
 
+## Self-critique
+
+This is not as clear as the 12factor app. A vault like this could be used outside of Django in a twelve-factor fashion, and then have configuration passed in as environment variables. However, Django's settings sort of work against 12factor anyway.
+
 ## Roadmap
 
 Not sure on the priority of these:
 
+- Add support for placing the vault on S3.  Vault becomes polymorphic because if path is an URL, then we will create a different sub-class of `Vault` using an override of `__new__`.  A local path vault is still standard.
+
+- Separate cli from Django management commands.
+
+- Add support for placing the passphrase on S3 similarly.
+
+- Support secret versioning, so that it is possible for a developer to push a new value for a password from the desktop,
+  and then change the password to some backend.
+
 - Add support for a default value for a secret, so that you get the default instead of KeyError
 
-- Add supoprt for placing the vault in S3 or elsewhere, by trying to interpret the vault as an URL.  Vault becomes polymorphic because
-  if path is an URL, then we will create a different sub-class of `Vault` using an override of `__new__`.   A local path vault is still
-  standard.
+- Add support/integration for Flask - it can surely be used without this because pbe, secret, and vault sub-modules are independent.
 
-- Provide non-string secrets, which sub-class `BaseSecret` but act like other Python objects. For dict/sequence types, avoid pickle 
-  for interoperation with Java. Uses JSON, but allow the Vault to be initialized with a specific encoder/decoder.
-
-- Provide a Java implementation, so that Konstantin can update PDB to store secrets in such a vault. The concept of storing multiple 
-  secrets in the same application vault might break it, so discuss first.
-
-- Add support for placing the key in a file or on S3, and provide a command to rotate keys. This requires a `Key` class which knows
-  how to get itself from wherever, or rotate itself.
-
-- Support usage without Django by providing a confsecrets console-script and a configuration file that influences the default vault.
-
+- Move to cryptodome once that package is out of Beta.
 
 ## Status
 
-Have implemented the `Vault`, `DefaultVault`, and initial `Secret` facilities.
-Need to create the Django application with settings and with management commands.
-
+Have implemented the `Vault`, `DefaultVault`, and initial `Secret` facilities.  Django management commands and integration needs tests.
