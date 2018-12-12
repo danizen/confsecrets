@@ -1,5 +1,5 @@
 import sys
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 
 from . import VaultConfigMixin
 
@@ -18,5 +18,4 @@ class Command(VaultConfigMixin, BaseCommand):
             value = self.vault[secret]
             print(value)
         except KeyError:
-            sys.stderr.write('There is no secret "{}" in the vault\n'.format(secret))
-            sys.exit(1)
+            raise CommandError('There is no secret "{}" in the vault\n'.format(secret))
