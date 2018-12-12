@@ -4,6 +4,7 @@ six
 
 # for testing
 pytest
+pytest-django
 pytest-cov
 coverage
 flake8
