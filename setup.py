@@ -39,10 +39,7 @@ setup(
     project_urls={
         'Documentation': 'https://danizen.github.io/confsecrets/',
     },
-    packages=[
-        'confsecrets',
-        'djsecrets',
-    ],
+    packages=find_packages(exclude=['test']),
     #entry_points={
     #    'console_scripts': [
     #        'confsecrets=confsecrets.cli:main',
