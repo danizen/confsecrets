@@ -63,7 +63,7 @@ Django integration is provided via a `confsecrets.django` application that allow
 
     CONFSECRETS_SALT = b'89982hto'
     CONFSECRETS_KEY = 'This is not an example'
-    CONFSECRETS_VAULT = os.path.join(BASE_DIR, 'vault.yaml')
+    CONFSECRETS_VAULT = os.path.join(BASE_DIR, 'vault.json')
 
 This initializes the default vault during configuration freeze. Otherwise, the default vault's configuration is controlled by the environment variables.
 
