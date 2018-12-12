@@ -9,7 +9,14 @@ from .config import Config
 from .pbe import PBEUtil
 import json
 
-__all__ = ('VAULT_MAGIC', 'VaultPathMissing', 'VaultNotFound', 'VaultFormatError', 'Vault', 'DefaultVault',)
+__all__ = (
+    'VAULT_MAGIC',
+    'VaultPathMissing',
+    'VaultNotFound',
+    'VaultFormatError',
+    'Vault',
+    'DefaultVault',
+)
 
 
 VAULT_MAGIC = 5986667612
