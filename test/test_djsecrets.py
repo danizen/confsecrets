@@ -1,6 +1,5 @@
 import pytest
 from base64 import b64decode
-from unittest import TestCase
 
 try:
     from django.core.management import call_command
