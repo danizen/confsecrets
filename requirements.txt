@@ -1,6 +1,7 @@
 # for cryptography
 pycryptodomex
 six
+enum; python_version<"3"
 
 # for testing
 pytest

@@ -46,7 +46,7 @@ setup(
         ]
     },
     tests_require=['pytest', 'pytest-cov', 'flake8', 'tox'],
-    install_requires=['six', 'pycryptodomex'],
+    install_requires=['six', 'pycryptodomex', 'enum; python_version<"3"'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',

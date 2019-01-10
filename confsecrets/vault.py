@@ -2,12 +2,23 @@
 Implement a generic Vault class and encode concept of a DefaultVaault in a singleton.
 """
 import os
+import json
 from threading import Lock
 from base64 import b64decode
-from collections import UserDict, OrderedDict
+from collections import OrderedDict
+
+try:
+    from collections import UserDict
+except ImportError:
+    from UserDict import IterableUserDict as UserDict
+
+try:
+    FileNotFoundError
+except NameError:
+    FileNotFoundError = OSError
+
 from .config import Config
 from .pbe import PBEUtil
-import json
 
 __all__ = (
     'VAULT_MAGIC',
