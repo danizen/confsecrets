@@ -4,9 +4,7 @@ title: confsecrets | Getting Started
 
 ## Summary
 
-confsecrets is a library providing secure symmetric cryptography based on PyCrypto or cryptodome 
-to any Python project.  A set of secrets are collected into a "vault" which is stored as a JSON
-or YAML file.   All secrets share the same salt and binary key.  The binary key is derived from a
+confsecrets is a library providing secure symmetric cryptography based on PyCrypto, pycryptodome, or pycryptodomex to any Python project.  A set of secrets are collected into a "vault" which is stored as a JSON file.  All secrets share the same salt and binary key.  The binary key is derived from a
 clear text key via PBKDF2.
 
 ## Installation
@@ -15,27 +13,29 @@ confsecrets is best installed from your Python Package repository:
 
         pip install confsecrets
 
-This provides two top-level packages:
+This provides one top-level packages:
 
 * `confsecrets` - general support for secrets management
-* `djsecrets` - Django integration
 
-## Integration with Django
+There is also a `confsecrets` command that you can use to create a new salt, manage the vault, etc.
 
-Integration with Django requires that you add the app to your Django apps:
+## Environment Variables
 
-        INSTALLED_APPS = [
-            ...
-            'djsecrets',
-        ]
+`confsecrets.vault.DefaultVault` and the command-line, use the following environment variables:
 
-To determine a new random salt which will be specific to your project, use the following management command:
+* `CONFSECRETS_SALT` - a base64 encoded, 8-byte salt
+* `CONFSECRETS_KEY` - a plain text password or passphrase from which the binary key is derived
+* `CONFSECSETS_PATH` - The path to a JSON-encoded vault file, which will be initialized if needed
 
-        ./manage.py newsalt
+## Console Comands
 
-Then, configure the salt and the secrets path in your Django settings:
-            
-        CONFSECRETS_SALT = b'abcd1234'
-        CONFSECRETS_PATH = os.path.join(BASE_DIR, 'mysecrets.json')
+* `confsecrets newsalt` - creates a new, base-64 encoded salt.  
+   The `--raw` argument causes this to be printed as python code, to be copied into a file.
 
-For more information, see the [Django Integration](django.md) section.
+* `confsecrets list` - lists all secrets in a vault.
+
+* `confsecrets get <secret>` - gets a single secret.
+
+* `confsecrets put <secret> <value>` - updates a secret to the given value
+
+* `confsecrets rm <secret>` - removes a secret from a vault

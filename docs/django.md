@@ -2,16 +2,43 @@
 title: confsecrets | Django Integration
 ---
 
-## Settings
+## Secrets
 
-The `djsecrets` module supports the following settings:
+Secrets are the primary way that confsecrets integrates with web frameworks like Django. These secrets are typically declared as static objects in your settings, like this:
 
-* `CONFSECRETS_SALT` - This must be a binary value at least 8-bytes long, and should be unique between projects.
-* `CONFSECRETS_PATH` - The path where this module will look for your secrets.
-* `CONFSECRETS_KEY` - This is a clear text key.
+        from confsecrets import Secret
+        
+        ...
+        
+        SOCK_COLOR = Secret('sockcolor', vault=VAULT)
+        UNDERWEAR = Secret('has_underwear', vault=VAULT)
 
-Environment variables for all settings are supported; the django settings apply only to `djsecrets` whereas the 
-environment variables are implemented in `confsecrets`.
+Secrets behave like strings under the appropriate circumstance:
+
+        print('His socks are %s' % settings.SOCK_COLOR)
+        
+
+Secrets behave like booleans under the appropriate circumstance:
+
+        print('He wears underwear' if settings.UNDERWEAR else 'He has no underwear')
+
+However, to use secrets, you must first declare a vault.
+
+
+## Initializing the Vault
+
+You need to create the vault in your settings file:
+
+    from confsecrets.vault import Vault
+    from confsecrets.vault import Config
+
+    ...
+
+    VAULT = Vault(
+        salt=b'abcd1234',
+        key='Every good boy does fine',
+        path=os.environ.get(Config.PATH.value)
+    )
 
 !!! Note
     Putting the encrypted material (vault file), salt, and clear text key in the
@@ -19,36 +46,13 @@ environment variables are implemented in `confsecrets`.
     only come together on the developer's desktop, in continuous integration (Jenkins),
     and on deployed servers.
 
-## Secrets
-
-Secrets are typically declared as static objects in your settings, like this:
-
-        from djsecrets import Secret
-        
-        ...
-        
-        SOCK_COLOR = Secret('sockcolor')
-        UNDERWEAR = Secret('has_underwear')
-
-Secrets behave like strings under the appropriate circumstance:
-
-        print('His socks are %s' % settings.SOCK_COLOR)
-        
-Secrets behave like booleans under the appropriate circumstance:
-
-        print('He wears underwear' if settings.UNDERWEAR else 'He has no underwear')
 
 ## Management Commands
 
-`djsecrets` supports the following management commands:
+`confsecrets` has no management commands, because it is not a Django app.
+You can use the console command `confsecrets` instead.
 
-* `newsalt` - Generates a new salt using a secure PRNG 
-* `listsecrets` - Lists secrets and their values in the vault
-* `getsecret` - Gets the value of a secret from the vault
-* `putsecret` - Puts a new value for a secret into the vault
-* `rmsecret` - Removes a secret from a vault
 
 ## Common Errors
 
-If you use a secret that does not exist in the vault, you will get a `KeyError`, just as if you were accessing 
-a value that is not present in a dictionary.
+If you use a secret that does not exist in the vault, you will get a `KeyError`, just as if you were accessing a value that is not present in a dictionary.
