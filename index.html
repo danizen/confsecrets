@@ -59,7 +59,10 @@
     <li class="toctree-l2"><a href="#installation">Installation</a></li>
     
 
-    <li class="toctree-l2"><a href="#integration-with-django">Integration with Django</a></li>
+    <li class="toctree-l2"><a href="#environment-variables">Environment Variables</a></li>
+    
+
+    <li class="toctree-l2"><a href="#console-comands">Console Comands</a></li>
     
 
     </ul>
@@ -111,34 +114,43 @@
             <div class="section">
               
                 <h2 id="summary">Summary</h2>
-<p>confsecrets is a library providing secure symmetric cryptography based on PyCrypto or cryptodome 
-to any Python project.  A set of secrets are collected into a "vault" which is stored as a JSON
-or YAML file.   All secrets share the same salt and binary key.  The binary key is derived from a
+<p>confsecrets is a library providing secure symmetric cryptography based on PyCrypto, pycryptodome, or pycryptodomex to any Python project.  A set of secrets are collected into a "vault" which is stored as a JSON file.  All secrets share the same salt and binary key.  The binary key is derived from a
 clear text key via PBKDF2.</p>
 <h2 id="installation">Installation</h2>
 <p>confsecrets is best installed from your Python Package repository:</p>
 <pre><code>    pip install confsecrets
 </code></pre>
-<p>This provides two top-level packages:</p>
+<p>This provides one top-level packages:</p>
 <ul>
 <li><code>confsecrets</code> - general support for secrets management</li>
-<li><code>djsecrets</code> - Django integration</li>
 </ul>
-<h2 id="integration-with-django">Integration with Django</h2>
-<p>Integration with Django requires that you add the app to your Django apps:</p>
-<pre><code>    INSTALLED_APPS = [
-        ...
-        'djsecrets',
-    ]
-</code></pre>
-<p>To determine a new random salt which will be specific to your project, use the following management command:</p>
-<pre><code>    ./manage.py newsalt
-</code></pre>
-<p>Then, configure the salt and the secrets path in your Django settings:</p>
-<pre><code>    CONFSECRETS_SALT = b'abcd1234'
-    CONFSECRETS_PATH = os.path.join(BASE_DIR, 'mysecrets.json')
-</code></pre>
-<p>For more information, see the <a href="django/">Django Integration</a> section.</p>
+<p>There is also a <code>confsecrets</code> command that you can use to create a new salt, manage the vault, etc.</p>
+<h2 id="environment-variables">Environment Variables</h2>
+<p><code>confsecrets.vault.DefaultVault</code> and the command-line, use the following environment variables:</p>
+<ul>
+<li><code>CONFSECRETS_SALT</code> - a base64 encoded, 8-byte salt</li>
+<li><code>CONFSECRETS_KEY</code> - a plain text password or passphrase from which the binary key is derived</li>
+<li><code>CONFSECSETS_PATH</code> - The path to a JSON-encoded vault file, which will be initialized if needed</li>
+</ul>
+<h2 id="console-comands">Console Comands</h2>
+<ul>
+<li>
+<p><code>confsecrets newsalt</code> - creates a new, base-64 encoded salt.<br />
+   The <code>--raw</code> argument causes this to be printed as python code, to be copied into a file.</p>
+</li>
+<li>
+<p><code>confsecrets list</code> - lists all secrets in a vault.</p>
+</li>
+<li>
+<p><code>confsecrets get &lt;secret&gt;</code> - gets a single secret.</p>
+</li>
+<li>
+<p><code>confsecrets put &lt;secret&gt; &lt;value&gt;</code> - updates a secret to the given value</p>
+</li>
+<li>
+<p><code>confsecrets rm &lt;secret&gt;</code> - removes a secret from a vault</p>
+</li>
+</ul>
               
             </div>
           </div>
@@ -187,5 +199,5 @@ clear text key via PBKDF2.</p>
 
 <!--
 MkDocs version : 1.0.4
-Build Date UTC : 2018-12-06 02:47:47
+Build Date UTC : 2019-01-10 04:21:39
 -->

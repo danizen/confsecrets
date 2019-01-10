@@ -72,9 +72,6 @@
     <li class="toctree-l2"><a href="#confsecretssecrets">confsecrets.secrets</a></li>
     
 
-    <li class="toctree-l2"><a href="#djsecrets">djsecrets</a></li>
-    
-
     </ul>
 	    </li>
           
@@ -151,27 +148,6 @@
 <ul>
 <li><code>confsecrets.secrets.BaseSecret</code> - A base secret simply knows how to set and get its value from a vault. If no vault is provided, it uses the <code>DefaultVault</code>.</li>
 <li><code>confsecrets.secrets.Secret</code> - A secret that behaves like a string in string contexts, a bool in bool contexts, and so on.</li>
-</ul>
-<h2 id="djsecrets"><code>djsecrets</code></h2>
-<p>Implements a Django application for secret management:</p>
-<p>Includes these management commands:</p>
-<ul>
-<li>newsalt - Generates a new random salt for encryption</li>
-<li>listsecrets - lists all secrets in the vault</li>
-<li>putsecret - Save a secret and its value into the vault</li>
-<li>getsecret - Gets the value of a single secret from the vault</li>
-<li>rmsecret - Remove a secret from the vault</li>
-</ul>
-<p>Includes these settings:</p>
-<ul>
-<li><code>CONFSECRETS_SALT</code> - An 8-byte binary value.</li>
-<li><code>CONFSECRETS_PATH</code> - A file system path</li>
-<li><code>CONFSECRETS_KEY</code> - A clear-text key that is converted to a binary key</li>
-</ul>
-<p>Includes these types:</p>
-<ul>
-<li><code>djsecrets.Secret</code> - an alias for <code>confsecrets.secrets.Secret</code></li>
-<li><code>djsecrets.BaseSecret</code> - an alias for <code>confsecrets.secrets.BaseSecret</code></li>
 </ul>
               
             </div>
