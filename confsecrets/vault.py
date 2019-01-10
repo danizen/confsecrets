@@ -117,19 +117,19 @@ class Vault(UserDict):
 
     def __getitem__(self, name):
         self.freshen()
-        encrypted_value = super().__getitem__(str(name))
+        encrypted_value = super(Vault, self).__getitem__(str(name))
         return self.pbe.decrypt(encrypted_value)
 
     def __setitem__(self, name, value):
         self.freshen()
         encrypted_value = self.pbe.encrypt(value).decode('utf-8')
-        retval = super().__setitem__(str(name), encrypted_value)
+        retval = super(Vault, self).__setitem__(str(name), encrypted_value)
         self.write()
         return retval
 
     def __delitem__(self, name):
         self.freshen()
-        retval = super().__delitem__(str(name))
+        retval = super(Vault, self).__delitem__(str(name))
         self.write()
         return retval
 
