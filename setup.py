@@ -40,13 +40,13 @@ setup(
         'Documentation': 'https://danizen.github.io/confsecrets/',
     },
     packages=find_packages(exclude=['test']),
-    #entry_points={
-    #    'console_scripts': [
-    #        'confsecrets=confsecrets.cli:main',
-    #    ]
-    #},
-    tests_require=['pytest', 'pytest-cov', 'flake8', 'Django>1.11,<2', 'coverage', 'tox', 'PyCrypto', 'six'],
-    install_requires=['PyCrypto', 'six'],
+    entry_points={
+        'console_scripts': [
+            'confsecrets=confsecrets.cli:main',
+        ]
+    },
+    tests_require=['pytest', 'pytest-cov', 'flake8', 'tox'],
+    install_requires=['six', 'pycryptodomex'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',

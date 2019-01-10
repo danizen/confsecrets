@@ -6,12 +6,23 @@ import string
 from enum import Enum
 from six.moves import shlex_quote
 
-from Crypto import Random
-from Crypto.Random import random
-from Crypto.Hash.HMAC import HMAC
-from Crypto.Hash import SHA256
-from Crypto.Cipher import AES
-from Crypto.Protocol.KDF import PBKDF2
+try:
+    # cryptodomex
+    from Cryptodome import Random
+    from Cryptodome.Random import random
+    from Cryptodome.Hash.HMAC import HMAC
+    from Cryptodome.Hash import SHA256
+    from Cryptodome.Cipher import AES
+    from Cryptodome.Protocol.KDF import PBKDF2
+except ImportError:
+    # cryptodome or PyCrypto
+    from Crypto import Random
+    from Crypto.Random import random
+    from Crypto.Hash.HMAC import HMAC
+    from Crypto.Hash import SHA256
+    from Crypto.Cipher import AES
+    from Crypto.Protocol.KDF import PBKDF2
+
 
 __all__ = [
     'InvalidSalt',

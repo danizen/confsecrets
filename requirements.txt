@@ -1,5 +1,5 @@
 # for cryptography
-PyCrypto>=2.6.1
+pycryptodomex
 six
 
 # for testing
