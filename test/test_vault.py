@@ -10,8 +10,8 @@ from confsecrets.pbe import InvalidMessageAuthenticationCode
 RAW_DATA = {
     'magic': VAULT_MAGIC,
     'data': {
-        'abc': '9utDFQuNAFgi88JMMdnhRjV6ChBlEBHVuyTJb1ImDr7VH9Q3FM4nIhP80hL12uuVy+1y',
-        'def': 'CHDdVTfbAPu6Z47cb4bSfe9LXq0yZLfJm2M2w+FgHwnO9xkYH/ry9v9olCePLuWaUN5R',
+        'abc': 'HnzqInYmVC+2Y/KNYvUlfUQFcxQfMSZ8dXZCNQCzBs914J/7wNZPTuXWzBub2db46z+o',
+        'def': 'UhwOF9Up7rt1LOlWwweLyBWSoSJAUTZcTkym11dvkw3ZgR+6OZ7Hq9bfsp0hm+vOL7wE',
     }
 }
 
@@ -48,7 +48,7 @@ class TestExistingVault(TestCase):
 
     def test_vault_getitem(self):
         encrypted_value = self.vault.data['abc']
-        self.assertEqual(encrypted_value, '9utDFQuNAFgi88JMMdnhRjV6ChBlEBHVuyTJb1ImDr7VH9Q3FM4nIhP80hL12uuVy+1y')
+        self.assertEqual(encrypted_value, 'HnzqInYmVC+2Y/KNYvUlfUQFcxQfMSZ8dXZCNQCzBs914J/7wNZPTuXWzBub2db46z+o')
         decrypted_value = self.vault['abc']
         self.assertEqual(decrypted_value, 'xyz')
 
