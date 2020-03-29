@@ -1,28 +1,17 @@
 """
 Wrap PyCrypto for safe and effective Password Based Encryption (PBE)
 """
-from base64 import b64encode, b64decode
+import os
+import secrets
 import string
+from base64 import b64encode, b64decode
 from enum import Enum
-from six.moves import shlex_quote
+from shlex import quote as shlex_quote
 
-try:
-    # cryptodomex
-    from Cryptodome import Random
-    from Cryptodome.Random import random
-    from Cryptodome.Hash.HMAC import HMAC
-    from Cryptodome.Hash import SHA256
-    from Cryptodome.Cipher import AES
-    from Cryptodome.Protocol.KDF import PBKDF2
-except ImportError:
-    # cryptodome or PyCrypto
-    from Crypto import Random
-    from Crypto.Random import random
-    from Crypto.Hash.HMAC import HMAC
-    from Crypto.Hash import SHA256
-    from Crypto.Cipher import AES
-    from Crypto.Protocol.KDF import PBKDF2
-
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes, hmac
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 __all__ = [
     'InvalidSalt',
@@ -165,8 +154,8 @@ class PasswordUtil():
         def generate_candidate(length):
             bpass = bytearray(length)
             for i in range(length):
-                cclass = random.choice(required_classes)
-                bpass[i] = ord(random.choice(cclass.characters()))
+                cclass = secrets.choice(required_classes)
+                bpass[i] = ord(secrets.choice(cclass.characters()))
             return bpass.decode('ascii')
         # each candidate is very likely to meet the requirements, but let's be sure
         while True:
@@ -211,9 +200,14 @@ class PBEUtil(object):
         Compute a derived key based on attributes on this object.
         """
         if self.__key is None:
-            def proof(password, salt):
-                return HMAC(password, salt, SHA256).digest()
-            self.__key = PBKDF2(self.password, self.salt, self.key_size, self.iterations, prf=proof)
+            kdf = PBKDF2HMAC(
+                algorithm=hashes.SHA256(),
+                length=self.key_size,
+                salt=self.salt,
+                iterations=self.iterations,
+                backend=default_backend()
+            )
+            self.__key = kdf.derive(self.password)
         return self.__key
 
     def encrypt_guts(self, cleartext):
@@ -225,9 +219,11 @@ class PBEUtil(object):
         """
         if isinstance(cleartext, str):
             cleartext = cleartext.encode('utf-8')
-        iv = Random.new().read(AES.block_size)
-        cipher = AES.new(self.key, AES.MODE_CFB, iv)
-        ciphertext = cipher.encrypt(cleartext)
+        iv = os.urandom(16)
+        backend = default_backend()
+        cipher = Cipher(algorithms.AES(self.key), modes.CFB(iv), backend=backend)
+        encryptor = cipher.encryptor()
+        ciphertext = encryptor.update(cleartext) + encryptor.finalize()
         return iv + ciphertext
 
     def decrypt_guts(self, message):
@@ -239,8 +235,10 @@ class PBEUtil(object):
         """
         iv = message[0:16]
         ciphertext = message[16:]
-        cipher = AES.new(self.key, AES.MODE_CFB, iv)
-        return cipher.decrypt(ciphertext)
+        backend = default_backend()
+        cipher = Cipher(algorithms.AES(self.key), modes.CFB(iv), backend=backend)
+        decryptor = cipher.decryptor()
+        return decryptor.update(ciphertext) + decryptor.finalize()
 
     def encrypt(self, cleartext):
         """
@@ -250,7 +248,9 @@ class PBEUtil(object):
         :return: Base64 encoded encrypted bytes with a mac
         """
         message_bytes = self.encrypt_guts(cleartext)
-        mac = HMAC(self.key, message_bytes, SHA256).digest()
+        h = hmac.HMAC(self.key, hashes.SHA256(), backend=default_backend())
+        h.update(message_bytes)
+        mac = h.finalize()
         return b64encode(mac + message_bytes)
 
     def decrypt_bytes(self, message):
@@ -263,8 +263,10 @@ class PBEUtil(object):
         message_bytes = b64decode(message)
         if len(message_bytes) < 48:
             raise MessageTooShort()
-        expect_mac = message_bytes[0:32]
-        actual_mac = HMAC(self.key, message_bytes[32:], SHA256).digest()
+        expect_mac = message_bytes[:32]
+        h = hmac.HMAC(self.key, hashes.SHA256(), backend=default_backend())
+        h.update(message_bytes[32:])
+        actual_mac = h.finalize()
         if actual_mac != expect_mac:
             raise InvalidMessageAuthenticationCode()
         return self.decrypt_guts(message_bytes[32:])

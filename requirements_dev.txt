@@ -1,6 +1,5 @@
 -r requirements.txt
 
-tox
 twine
 mkdocs
 ipython>=5.6.0

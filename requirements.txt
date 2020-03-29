@@ -1,7 +1,5 @@
 # for cryptography
-pycryptodomex
-six
-enum; python_version<"3"
+cryptography
 
 # for testing
 pytest
@@ -9,3 +7,4 @@ pytest-django
 pytest-cov
 coverage
 flake8
+tox

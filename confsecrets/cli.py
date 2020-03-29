@@ -8,14 +8,8 @@ from confsecrets.config import Config
 from confsecrets.vault import Vault
 
 
-try:
-    from Cryptodome import Random
-except ImportError:
-    from Crypto import Random
-
-
 def newsalt_command(raw=False):
-    newsalt = Random.new().read(8)
+    newsalt = os.urandom(8)
     if raw:
         print(newsalt)
     else:
