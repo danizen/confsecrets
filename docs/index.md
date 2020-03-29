@@ -4,8 +4,10 @@ title: confsecrets | Getting Started
 
 ## Summary
 
-confsecrets is a library providing secure symmetric cryptography based on PyCrypto, pycryptodome, or pycryptodomex to any Python project.  A set of secrets are collected into a "vault" which is stored as a JSON file.  All secrets share the same salt and binary key.  The binary key is derived from a
-clear text key via PBKDF2.
+confsecrets is a library providing secure symmetric cryptography based on Python cryptography for any Python 
+project. A set of secrets are collected into a "vault" which is stored as a JSON file. All secrets share the 
+same salt and binary key. The binary key is derived from a clear text key via PBKDF2. The algorithm used is AES
+with a 256 bit key, making confsecrets suitable for U.S. Federal Government use.
 
 ## Installation
 
