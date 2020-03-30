@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 import os
-import subprocess
+import shutil
 
 from setuptools import setup, find_packages
+from distutils.command import clean
 
 
 def get_version():
@@ -23,6 +24,19 @@ def get_readme():
     """
     with open('README.md') as f:
         return f.read()
+
+
+class PurgeCommand(clean.clean):
+    """
+    Custom command to purge everything
+    """
+    description = "purge 'build', 'dist', and '*.egg-info' directories"
+
+    def run(self):
+        super().run()
+        if not self.dry_run:
+            for path in ['build', 'dist', 'rds_secrets.egg-info']:
+                os.path.isdir(path) and shutil.rmtree(path)
 
 
 setup(
@@ -46,6 +60,9 @@ setup(
         ]
     },
     tests_require=['tox'],
+    cmdclass={
+        'purge': PurgeCommand,
+    },
     install_requires=['cryptography'],
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -65,4 +82,3 @@ setup(
         'Topic :: Utilities',
     ]
 )
-
