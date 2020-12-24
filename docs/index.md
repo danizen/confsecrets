@@ -4,10 +4,10 @@ title: confsecrets | Getting Started
 
 ## Summary
 
-confsecrets is a library providing secure symmetric cryptography based on Python cryptography for any Python 
-project. A set of secrets are collected into a "vault" which is stored as a JSON file. All secrets share the 
+`confsecrets` is a library providing secure symmetric cryptography based on Python cryptography for any Python 
+project. A set of secrets are collected into a "vault" which is stored as a YAML file. All secrets share the 
 same salt and binary key. The binary key is derived from a clear text key via PBKDF2. The algorithm used is AES
-with a 256 bit key, making confsecrets suitable for U.S. Federal Government use.
+with a 256 bit key, making `confsecrets` suitable for U.S. Federal Government use.
 
 ## Installation
 
@@ -41,3 +41,4 @@ There is also a `confsecrets` command that you can use to create a new salt, man
 * `confsecrets put <secret> <value>` - updates a secret to the given value
 
 * `confsecrets rm <secret>` - removes a secret from a vault
+z

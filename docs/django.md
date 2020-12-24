@@ -10,8 +10,8 @@ Secrets are the primary way that confsecrets integrates with web frameworks like
         
         ...
         
-        SOCK_COLOR = Secret('sockcolor', vault=VAULT)
-        UNDERWEAR = Secret('has_underwear', vault=VAULT)
+        SOCK_COLOR = Secret('sockcolor')
+        UNDERWEAR = Secret('has_underwear')
 
 Secrets behave like strings under the appropriate circumstance:
 
@@ -22,23 +22,22 @@ Secrets behave like booleans under the appropriate circumstance:
 
         print('He wears underwear' if settings.UNDERWEAR else 'He has no underwear')
 
-However, to use secrets, you must first declare a vault.
+Unless you pass a vault, secrets use the DefaultVault.
 
 
 ## Initializing the Vault
 
-You need to create the vault in your settings file:
 
-    from confsecrets.vault import Vault
-    from confsecrets.vault import Config
+By default, the vault takes its configuration from environment variables, however, if you place 'confsecrets.django' in your installed apps, 
+then you can specify the vault's configuratio in your settings:
 
-    ...
+        INSTALLED_APPS = [
+            'confsecrets.django',
+        ]
 
-    VAULT = Vault(
-        salt=b'abcd1234',
-        key='Every good boy does fine',
-        path=os.environ.get(Config.PATH.value)
-    )
+        CONFSECRETS_SALT = b'\xde\x0f9\xb7\xbd1\x13\xdc'
+        CONFSECRETS_PATH = '/var/lib/mydjangoapp/secrets.yaml'
+
 
 !!! Note
     Putting the encrypted material (vault file), salt, and clear text key in the
@@ -49,9 +48,8 @@ You need to create the vault in your settings file:
 
 ## Management Commands
 
-`confsecrets` has no management commands, because it is not a Django app.
-You can use the console command `confsecrets` instead.
-
+`confsecrets` has a management command that mirrors the console command `confsecrets`.  The only difference is that
+the management command can take part of its configuration from settings.
 
 ## Common Errors
 
