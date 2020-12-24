@@ -2,10 +2,11 @@
 Implement a generic Vault class and encode concept of a DefaultVaault in a singleton.
 """
 import os
-import json
 from threading import Lock
 from base64 import b64decode
 from collections import OrderedDict
+
+import yaml
 
 try:
     from collections import UserDict
@@ -77,7 +78,7 @@ class Vault(UserDict):
 
     def __read_local(self):
         with open(self.path, 'r') as f:
-            new_data = json.load(f)
+            new_data = yaml.load(f, yaml.SafeLoader)
             if not isinstance(new_data, dict):
                 raise VaultFormatError()
             if 'magic' not in new_data:
@@ -89,10 +90,10 @@ class Vault(UserDict):
     def __write_local(self):
         vault_data = {
             'magic': VAULT_MAGIC,
-            'data': OrderedDict(sorted(self.data.items(), key=lambda item: item[0]))
+            'data': dict(sorted(self.data.items(), key=lambda item: item[0]))
         }
         with open(self.path, 'w') as f:
-            json.dump(vault_data, f)
+            yaml.dump(vault_data, f)
             f.flush()
 
     def read(self):
