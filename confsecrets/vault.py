@@ -162,9 +162,6 @@ class DefaultVault(Vault):
         path = DefaultVault.PATH
         super().__init__(salt, key, path)
 
-    def __repr__(self):
-        return 'Vault(path=%r)' % self.path
-
     @classmethod
     def init(cls, salt=None, key=None, path=None, **kwargs):
         """

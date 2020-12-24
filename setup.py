@@ -63,7 +63,7 @@ setup(
     cmdclass={
         'purge': PurgeCommand,
     },
-    install_requires=['cryptography'],
+    install_requires=['cryptography', 'pyyaml'],
     classifiers=[
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
