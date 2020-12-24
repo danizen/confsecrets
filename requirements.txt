@@ -1,5 +1,6 @@
 # for cryptography
 cryptography
+pyyaml
 
 # for testing
 pytest

@@ -16,9 +16,11 @@ class BaseSecret:
 
     def __init__(self, name, vault=None):
         self.name = str(name)
-        if vault is None:
-            vault = DefaultVault()
-        self.vault = vault
+        self.__vault = vault
+
+    @property
+    def vault(self):
+        return self.__vault if self.__vault is not None else DefaultVault()
 
     def get(self):
         return self.vault[self.name]
@@ -30,7 +32,7 @@ class BaseSecret:
         return self.get()
 
     def __repr__(self):
-        return '<%s name=%s>' % (type(self), self.name)
+        return 'Secret(name=%r)' % self.name
 
 
 class Secret(BaseSecret):

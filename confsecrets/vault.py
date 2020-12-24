@@ -134,7 +134,7 @@ class Vault(UserDict):
         return retval
 
     def __repr__(self):
-        return '<Vault object path=%s>' % self.path
+        return 'Vault(path=%r)' % self.path
 
 
 class DefaultVault(Vault):
@@ -161,6 +161,9 @@ class DefaultVault(Vault):
         key = DefaultVault.KEY
         path = DefaultVault.PATH
         super().__init__(salt, key, path)
+
+    def __repr__(self):
+        return 'Vault(path=%r)' % self.path
 
     @classmethod
     def init(cls, salt=None, key=None, path=None, **kwargs):

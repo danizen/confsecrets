@@ -3,7 +3,7 @@ import tempfile
 import json
 import os
 
-from confsecrets.vault import *
+from confsecrets.vault import VAULT_MAGIC, Vault
 from confsecrets.pbe import InvalidMessageAuthenticationCode
 
 

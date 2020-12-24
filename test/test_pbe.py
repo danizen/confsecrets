@@ -1,7 +1,14 @@
 from unittest import TestCase
 from base64 import b64decode, b64encode
 
-from confsecrets.pbe import *
+from confsecrets.pbe import (
+    PBEUtil,
+    PasswordUtil,
+    MessageTooShort,
+    InvalidMessageAuthenticationCode,
+    PasswordTooSimple,
+    PasswordNotShellSafe
+)
 
 
 class TestPBEUtil(TestCase):
