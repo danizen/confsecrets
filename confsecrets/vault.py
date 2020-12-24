@@ -4,7 +4,6 @@ Implement a generic Vault class and encode concept of a DefaultVaault in a singl
 import os
 from threading import Lock
 from base64 import b64decode
-from collections import OrderedDict
 
 import yaml
 
@@ -88,12 +87,11 @@ class Vault(UserDict):
             self.data = new_data['data']
 
     def __write_local(self):
-        vault_data = {
-            'magic': VAULT_MAGIC,
-            'data': dict(sorted(self.data.items(), key=lambda item: item[0]))
-        }
         with open(self.path, 'w') as f:
-            yaml.dump(vault_data, f)
+            print('magic: ' + str(VAULT_MAGIC), file=f)
+            print('data:', file=f)
+            for key, value in self.data.items():
+                print('  ' + key + ': ' + value, file=f)
             f.flush()
 
     def read(self):
