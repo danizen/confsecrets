@@ -54,9 +54,9 @@ How about this:
   - implement `confsecrets\vault.py` which contains a `Vault` class that is a subclass of UserDict, maybe OrderedDict.
   - The vault has the following init:
 
-          Vault(key=, salt=, path=, encoder=, decoder=)
+          Vault(key=, salt=, path=)
 
-  - It implements it encrypts using the the salt and key to base64.
+  - It encrypts using the the salt and key, converting the crypttext to base64.
   - Encrypting immediately flushes the file that has been loaded
   - On decrypt, it checks to see if the file has changed, and reloads the underlying data in that case.
   - On decrypt, it reverses the process.
@@ -68,18 +68,19 @@ Django integration is provided via a `confsecrets.django` application that allow
 
     CONFSECRETS_SALT = b'89982hto'
     CONFSECRETS_KEY = 'This is not an example'
-    CONFSECRETS_VAULT = os.path.join(BASE_DIR, 'vault.json')
+    CONFSECRETS_VAULT = os.path.join(BASE_DIR, 'vault.yaml')
 
 This initializes the default vault during configuration freeze. Otherwise, the default vault's configuration is controlled by the environment variables.
 
-This is secure as long as the vault file are not stored in git, and then it becomes obfuscation. It is best when both the passphrase from which a key is derived is also outside of git.
+This is secure as long as the vault file is not stored in git, and then it becomes obfuscation. Alternatively, the vault file
+could be stored in the project, but the key is external to the git repository.
 
-Saving secrets becomes easy through a management command to populate the vault:
+Saving secrets becomes easy through a command-line/management command to populate the vault:
 
-  * `listsecrets` - lists the secrets stored in the vault, along with their value
-  * `putsecret <name> [--value <value>]` - uses value if present, otherwise uses stdin
-  * `getsecret <name>` - typical options, outputs the secret to the stdout
-  * `rmsecret <name>` - removes an encrypted value from the vault
+  * `list` - lists the secrets stored in the vault, along with their value
+  * `write <name> <value>` - uses value if present, otherwise uses stdin
+  * `read <name>` - typical options, outputs the secret to the stdout
+  * `rm <name>` - removes an encrypted value from the vault
 
 With the system configured, dealing with the vault becomes as easy as using Secret objects:
 

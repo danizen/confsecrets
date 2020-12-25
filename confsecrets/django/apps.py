@@ -6,17 +6,17 @@ from django.conf import settings
 from confsecrets.vault import DefaultVault
 from confsecrets.config import Config
 
-
 # Default configuration
 for item in Config:
     if not hasattr(settings, item.value):
-        if item == Config.SALT:
-            setattr(settings, item.value, b64decode(os.environ.get(item.value, None)))
-        else:
-            setattr(settings, item.value, os.environ.get(item.value, None))
+        value = os.environ.get(item.value, None)
+        if item == Config.SALT and value:
+            value = b64decode(value)
+        setattr(settings, item.value, value)
 
 
-class SecretsAppConfig(AppConfig):
+class SecretsAppConfig(AppConfig
+    ):
     name = 'confsecrets'
     verbose_name = 'confsecrets.django'
 
