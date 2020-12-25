@@ -35,6 +35,11 @@ derived also in cloud storage.
 - Doesn't directly support use of S3 or HashiCorp vault as a backend, only itself.
 - Doesn't offer management of secrets, just management of keys.
 
+### dynaconf
+
+See https://www.dynaconf.com/ - this provides a superset of the features in confsecrets at present,
+but also appears more complicated to use. I also cannot say dynaconf is up to U.S.Federal Government standards.
+
 ### EC2 Secrets Manager
 
 - Again, this is a central play, and locks you in somewhat to the vendor.

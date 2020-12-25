@@ -72,12 +72,12 @@ def parse_args(prog, args):
     newsalt = sub.add_parser('newsalt', help='Create a new vault at the path')
     newsalt.add_argument('--raw', action='store_true', default=False)
 
-    get_secret = sub.add_parser('get', help='Get a secret from the vault')
+    get_secret = sub.add_parser('read', help='Read a secret from the vault')
     get_secret.add_argument('name')
 
     sub.add_parser('list', help='List secrets in the vault')
 
-    put_secret = sub.add_parser('put', help='Update the vault with a new secret')
+    put_secret = sub.add_parser('write', help='Update the vault with a new secret')
     put_secret.add_argument('name')
     put_secret.add_argument('value')
 
@@ -109,9 +109,9 @@ def main_guts(prog, args):
     vault = Vault(salt, opts.key, opts.path)
     if opts.cmd == 'list':
         return list_secrets_command(vault)
-    elif opts.cmd == 'get':
+    elif opts.cmd == 'read':
         return get_secret_command(vault, opts.name)
-    elif opts.cmd == 'put':
+    elif opts.cmd == 'write':
         return put_secret_command(vault, opts.name, opts.value)
     elif opts.cmd == 'rm':
         return rm_secret_command(vault, opts.name)

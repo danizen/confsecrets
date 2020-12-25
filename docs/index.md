@@ -36,9 +36,8 @@ There is also a `confsecrets` command that you can use to create a new salt, man
 
 * `confsecrets list` - lists all secrets in a vault.
 
-* `confsecrets get <secret>` - gets a single secret.
+* `confsecrets read <secret>` - gets a single secret.
 
-* `confsecrets put <secret> <value>` - updates a secret to the given value
+* `confsecrets write <secret> <value>` - updates a secret to the given value
 
 * `confsecrets rm <secret>` - removes a secret from a vault
-z
