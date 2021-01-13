@@ -15,8 +15,7 @@ for item in Config:
         setattr(settings, item.value, value)
 
 
-class SecretsAppConfig(AppConfig
-    ):
+class SecretsAppConfig(AppConfig):
     name = 'confsecrets'
     verbose_name = 'confsecrets.django'
 
