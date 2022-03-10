@@ -1,5 +1,6 @@
 -r requirements.txt
 
 twine
+build
 mkdocs
 ipython>=5.6.0
